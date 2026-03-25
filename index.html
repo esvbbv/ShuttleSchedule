@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shuttle Schedule</title>
+  <style>
+    body {
+      margin: 0;
+      background: #16175d;
+      color: #b7d63f;
+      font-family: Arial, Helvetica, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1400px;
+    }
+
+    h1 {
+      font-size: 5rem;
+      margin: 0 0 20px 0;
+      font-weight: 900;
+    }
+
+    h2 {
+      font-size: 3rem;
+      margin: 0 0 40px 0;
+      font-weight: 800;
+    }
+
+    .minutes {
+      font-size: 8rem;
+      font-weight: 900;
+      line-height: 1;
+      margin: 40px 0 10px 0;
+    }
+
+    .label {
+      font-size: 3rem;
+      font-weight: 800;
+      margin-bottom: 40px;
+    }
+
+    .next-time {
+      font-size: 2rem;
+      color: white;
+      margin-top: 20px;
+    }
+
+    .footer {
+      position: fixed;
+      left: 40px;
+      bottom: 30px;
+      color: white;
+      font-size: 1.5rem;
+      text-align: left;
+      opacity: 0.9;
+    }
+
+    .error {
+      color: #ffdddd;
+      font-size: 2rem;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Shuttle Schedule</h1>
+    <h2>Next shuttle departing in:</h2>
+
+    <div class="minutes" id="minutes">--</div>
+    <div class="label">minutes</div>
+
+    <div class="next-time" id="nextTime">Loading schedule...</div>
+    <div class="error" id="error"></div>
+  </div>
+
+  <script>
+    const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/1zbTJAMGYDRDT0UOFDOThcfG_vDK9dXxD0n5eMDHQ3r0/edit?gid=0#gid=0";
+
+    function parseTimeToMinutes(timeStr) {
+      timeStr = timeStr.trim();
+
+      const ampmMatch = timeStr.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+      if (ampmMatch) {
+        let hour = parseInt(ampmMatch[1], 10);
+        const minute = parseInt(ampmMatch[2], 10);
+        const ampm = ampmMatch[3].toUpperCase();
+
+        if (ampm === "AM" && hour === 12) hour = 0;
+        if (ampm === "PM" && hour !== 12) hour += 12;
+
+        return hour * 60 + minute;
+      }
+
+      const twentyFourMatch = timeStr.match(/^(\d{1,2}):(\d{2})$/);
+      if (twentyFourMatch) {
+        const hour = parseInt(twentyFourMatch[1], 10);
+        const minute = parseInt(twentyFourMatch[2], 10);
+        return hour * 60 + minute;
+      }
+
+      return null;
+    }
+
+    function formatMinutesAsTime(totalMinutes) {
+      let hour = Math.floor(totalMinutes / 60);
+      const minute = totalMinutes % 60;
+      const ampm = hour >= 12 ? "PM" : "AM";
+
+      hour = hour % 12;
+      if (hour === 0) hour = 12;
+
+      return `${hour}:${String(minute).padStart(2, "0")} ${ampm}`;
+    }
+
+    async function loadSchedule() {
+      const response = await fetch(SHEET_CSV_URL + "&cachebust=" + Date.now());
+      const csv = await response.text();
+
+      const lines = csv
+        .split("\n")
+        .map(line => line.trim())
+        .filter(line => line.length > 0);
+
+      if (lines.length <= 1) {
+        throw new Error("No schedule rows found.");
+      }
+
+      const times = lines
+        .slice(1)
+        .map(line => line.replace(/^"|"$/g, "").trim())
+        .map(parseTimeToMinutes)
+        .filter(val => val !== null)
+        .sort((a, b) => a - b);
+
+      if (times.length === 0) {
+        throw new Error("No valid departure times found.");
+      }
+
+      return times;
+    }
+
+    function getNextDeparture(scheduleMinutes) {
+      const now = new Date();
+      const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+      for (const departure of scheduleMinutes) {
+        if (departure >= currentMinutes) {
+          return {
+            nextDeparture: departure,
+            minutesUntil: departure - currentMinutes
+          };
+        }
+      }
+
+      return null;
+    }
+
+    async function updateDisplay() {
+      const errorEl = document.getElementById("error");
+      const minutesEl = document.getElementById("minutes");
+      const nextTimeEl = document.getElementById("nextTime");
+
+      try {
+        errorEl.textContent = "";
+        const schedule = await loadSchedule();
+        const next = getNextDeparture(schedule);
+
+        if (!next) {
+          minutesEl.textContent = "--";
+          nextTimeEl.textContent = "No more departures today";
+          return;
+        }
+
+        minutesEl.textContent = next.minutesUntil;
+        nextTimeEl.textContent = `Next departure: ${formatMinutesAsTime(next.nextDeparture)}`;
+      } catch (err) {
+        minutesEl.textContent = "--";
+        nextTimeEl.textContent = "Schedule unavailable";
+        errorEl.textContent = err.message;
+      }
+    }
+
+    updateDisplay();
+    setInterval(updateDisplay, 60000);
+  </script>
+</body>
+</html>

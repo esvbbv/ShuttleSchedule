@@ -5,16 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Shuttle Schedule</title>
   <style>
-  .logo {
-    position: fixed;
-    left: 40px;
-    bottom: 30px;
-  }
-
-  .logo img {
-    width: 180px;
-    height: auto;
-  }
     body {
       margin: 0;
       background: #16175d;
@@ -80,13 +70,11 @@
     }
   </style>
 </head>
-  <div class="logo">
-  <img src="doubletree-logo.png" alt="DoubleTree Logo">
-</div>
+  
 <body>
   <div class="container">
     <h1>Shuttle Schedule</h1>
-    <h2>Next shuttle departing in:</h2>
+    <h2>Next shuttle leaving in:</h2>
 
     <div class="minutes" id="minutes">--</div>
     <div class="label">minutes</div>
@@ -94,9 +82,18 @@
     <div class="next-time" id="nextTime">Loading schedule...</div>
     <div class="error" id="error"></div>
   </div>
+.logo {
+  position: fixed;
+  left: 40px;
+  bottom: 30px;
+}
 
+.logo img {
+  width: 180px; /* adjust size */
+  height: auto;
+}
   <script>
-    const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSAHdpEZv0Hl9VNXoBJHsZDU7YlFWdqjfMk9OI6k4z1H0WCPmUkhsJIgheofIvB6HoPBGep1sl2VrCG/pub?gid=0&single=true&output=csv"
+    const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSAHdpEZv0Hl9VNXoBJHsZDU7YlFWdqjfMk9OI6k4z1H0WCPmUkhsJIgheofIvB6HoPBGep1sl2VrCG/pub?gid=0&single=true&output=csv";
 
     function parseTimeToMinutes(timeStr) {
       timeStr = timeStr.trim();
@@ -189,7 +186,7 @@
 
         if (!next) {
           minutesEl.textContent = "--";
-          nextTimeEl.textContent = "No more departures today";
+          nextTimeEl.textContent = "No more departures today.  First Shuttle in the morning will leave at 5:00 am";
           return;
         }
 
@@ -205,5 +202,8 @@
     updateDisplay();
     setInterval(updateDisplay, 60000);
   </script>
+  <div class="logo">
+  <img src="doubletree-logo.png" alt="DoubleTree Logo">
+</div>
 </body>
 </html>

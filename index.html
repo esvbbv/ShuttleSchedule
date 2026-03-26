@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Shuttle Schedule</title>
+  <title>Airport Shuttle</title>
 
   <style>
     body {
@@ -12,15 +12,19 @@
       color: #b7d63f;
       font-family: Arial, Helvetica, sans-serif;
       display: flex;
-      align-items: center;
-      justify-content: center;
       height: 100vh;
-      text-align: center;
+      overflow: hidden;
     }
 
-    .container {
-      width: 90%;
-      max-width: 1400px;
+    /* LEFT SIDE (TEXT) */
+    .left {
+      width: 65%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 40px;
     }
 
     h1 {
@@ -30,7 +34,7 @@
     }
 
     h2 {
-      font-size: 3rem;
+      font-size: 2.5rem;
       margin: 0 0 40px 0;
       font-weight: 800;
     }
@@ -38,7 +42,7 @@
     .minutes {
       font-size: 8rem;
       font-weight: 900;
-      margin: 40px 0 10px 0;
+      margin: 20px 0;
     }
 
     .label {
@@ -48,18 +52,40 @@
 
     .next-time {
       font-size: 2rem;
+      color: white;
       margin-top: 20px;
     }
 
+    /* RIGHT SIDE (IMAGES) */
+    .right {
+      width: 35%;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .image-top, .image-bottom {
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .image-top img,
+    .image-bottom img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* LOGO */
     .logo {
       position: fixed;
       left: 40px;
       bottom: 30px;
-      opacity: 0.95;
+      z-index: 10;
     }
 
     .logo img {
-      width: 160px;
+      width: 140px;
       height: auto;
     }
   </style>
@@ -67,7 +93,8 @@
 
 <body>
 
-  <div class="container">
+  <!-- LEFT SIDE -->
+  <div class="left">
     <h1>Airport Shuttle</h1>
     <h2>Next departure from Lower Lobby drive in:</h2>
 
@@ -77,12 +104,23 @@
     <div class="next-time" id="nextTime">Loading schedule...</div>
   </div>
 
+  <!-- RIGHT SIDE -->
+  <div class="right">
+    <div class="image-top">
+      <img src="map.png" alt="Shuttle Route Map">
+    </div>
+    <div class="image-bottom">
+      <img src="shuttlestop.png" alt="Shuttle Pickup Location">
+    </div>
+  </div>
+
+  <!-- LOGO -->
   <div class="logo">
     <img src="doubletree-logo.png" alt="DoubleTree Logo">
   </div>
 
   <script>
-    const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSAHdpEZv0Hl9VNXoBJHsZDU7YlFWdqjfMk9OI6k4z1H0WCPmUkhsJIgheofIvB6HoPBGep1sl2VrCG/pub?gid=0&single=true&output=csv";
+    const SHEET_CSV_URL = "PASTE_YOUR_URL_HERE";
 
     function parseTimeToMinutes(timeStr) {
       if (!timeStr) return null;
@@ -95,8 +133,8 @@
 
       const match = timeStr.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
       if (match) {
-        let h = parseInt(match[1]);
-        let m = parseInt(match[2]);
+        let h = parseInt(match[1], 10);
+        let m = parseInt(match[2], 10);
         let ampm = match[3].toUpperCase();
 
         if (ampm === "PM" && h !== 12) h += 12;
@@ -112,7 +150,6 @@
       let h = Math.floor(mins / 60);
       let m = mins % 60;
       let ampm = h >= 12 ? "PM" : "AM";
-
       h = h % 12 || 12;
       return `${h}:${String(m).padStart(2, "0")} ${ampm}`;
     }
@@ -141,7 +178,8 @@
         }
 
         document.getElementById("minutes").textContent = next - current;
-        document.getElementById("nextTime").textContent = "Next departure: " + formatTime(next);
+        document.getElementById("nextTime").textContent =
+          "Next departure: " + formatTime(next);
 
       } catch {
         document.getElementById("nextTime").textContent = "Schedule unavailable";

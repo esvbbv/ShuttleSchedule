@@ -64,12 +64,16 @@
       height: 100%;
     }
 
-    .image-top, .image-bottom {
-      flex: 1;
+    .image-top {
+      flex: 2; /* bigger */
       overflow: hidden;
     }
-
-    .image-top img,
+    
+    .image-top, .image-bottom {
+      flex: 1; /* smaller */
+      overflow: hidden;
+    }
+    
     .image-bottom img {
       width: 100%;
       height: 100%;

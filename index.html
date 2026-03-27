@@ -21,18 +21,11 @@
   width: 70%;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly; /* 👈 spreads content top → bottom */
+  justify-content: space-evenly;
   align-items: center;
   text-align: center;
   padding: 3vw;
   height: 100%;
-  gap: 2vh;
-}
-
-.left h1 {
-  font-size: 7vw;
-  margin: 0 0 1vw 0;
-  font-weight: 900;
 }
 
 .left h1 {
@@ -49,18 +42,49 @@
 }
 
 .minutes {
-  font-size: 18vw;   /* 👈 BIG focal point */
   font-weight: 900;
   line-height: 1;
+  margin: 1vw 0;
+  transition: transform 0.35s ease, opacity 0.35s ease, font-size 0.35s ease;
+  animation: pulseMinutes 4s ease-in-out infinite;
+}
+
+.minutes.digits-1 {
+  font-size: 18vw;
+}
+
+.minutes.digits-2 {
+  font-size: 15vw;
+}
+
+.minutes.digits-3 {
+  font-size: 11vw;
 }
 
 .label {
-  font-size: 5vw;
+  font-size: 4vw;
   font-weight: 800;
 }
 
 .next-time {
-  font-size: 4vw;
+  font-size: 3vw;
+  margin-top: 1vw;
+}
+
+@keyframes pulseMinutes {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.04);
+    opacity: 0.96;
+  }
+}
+
+.minutes.update-pop {
+  animation: none;
+  transform: scale(1.08);
 }
 
     /* RIGHT SIDE (IMAGES) */

@@ -147,21 +147,48 @@
       width: 140px;
       height: auto;
     }
+    /* LAYOUT BLOCKS (NEW) */
+.top-block {
+  text-align: center;
+}
+
+.center-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5vh;
+}
+
+.bottom-block {
+  text-align: center;
+}
   </style>
 </head>
 
 <body>
 
   <!-- LEFT SIDE -->
-  <div class="left">
+<div class="left">
+
+  <!-- TOP -->
+  <div class="top-block">
     <h1>Airport Shuttle</h1>
     <h2>Next departure from Lower Lobby drive in:</h2>
+  </div>
 
+  <!-- CENTER -->
+  <div class="center-block">
     <div class="minutes" id="minutes">--</div>
     <div class="label">minutes</div>
+  </div>
 
+  <!-- BOTTOM -->
+  <div class="bottom-block">
     <div class="next-time" id="nextTime">Loading schedule...</div>
   </div>
+
+</div>
 
   <!-- RIGHT SIDE -->
   <div class="right">

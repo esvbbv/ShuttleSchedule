@@ -21,24 +21,26 @@
   width: 70%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 3vh 3vw;
+  padding: 2vh 3vw 4vh 3vw;
   height: 100%;
+  box-sizing: border-box;
 }
 
 .left h1 {
   font-size: 6vw;
+  margin: 0 0 1vh 0;
   font-weight: 900;
-  margin: 0;
+  line-height: 1;
 }
 
 .left h2 {
-  font-size: 3.2vw;
+  font-size: 3vw;
   font-weight: 800;
-  margin: 0;
   max-width: 90%;
+  line-height: 1.1;
 }
 
 .minutes {
@@ -50,19 +52,19 @@
 }
 
 .minutes.digits-none {
-  font-size: 10vw;
+  font-size: 8vw;
 }
 
 .minutes.digits-1 {
-  font-size: 14vw;
-}
-
-.minutes.digits-2 {
   font-size: 12vw;
 }
 
+.minutes.digits-2 {
+  font-size: 10vw;
+}
+
 .minutes.digits-3 {
-  font-size: 9vw;
+  font-size: 8vw;
 }
 
 .minutes.update-pop {
@@ -70,13 +72,15 @@
 }
     
 .label {
-  font-size: 4vw;
+  font-size: 3.5vw;
   font-weight: 800;
+  line-height: 1;
 }
 
 .next-time {
-  font-size: 3vw;
-  margin-top: 1vw;
+  font-size: 3.5vw;
+  font-weight: 800;
+  margin-top: 0;
 }
 
 @keyframes pulseMinutes {
@@ -150,6 +154,7 @@
     /* LAYOUT BLOCKS (NEW) */
 .top-block {
   text-align: center;
+  margin-bottom: 4vh;
 }
 
 .center-block {
@@ -157,7 +162,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.5vh;
+  margin-bottom: 3vh;
 }
 
 .bottom-block {

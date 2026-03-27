@@ -174,72 +174,121 @@
     const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSAHdpEZv0Hl9VNXoBJHsZDU7YlFWdqjfMk9OI6k4z1H0WCPmUkhsJIgheofIvB6HoPBGep1sl2VrCG/pub?gid=0&single=true&output=csv";
 
     function parseTimeToMinutes(timeStr) {
-      if (!timeStr) return null;
-      timeStr = String(timeStr).trim().replace(/^"|"$/g, "");
+    if (!timeStr) return null;
+    timeStr = String(timeStr).trim().replace(/^"|"$/g, "");
 
-      const dateObj = new Date(timeStr);
-      if (!isNaN(dateObj)) {
-        return dateObj.getHours() * 60 + dateObj.getMinutes();
-      }
-
-      const match = timeStr.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
-      if (match) {
-        let h = parseInt(match[1], 10);
-        let m = parseInt(match[2], 10);
-        let ampm = match[3].toUpperCase();
-
-        if (ampm === "PM" && h !== 12) h += 12;
-        if (ampm === "AM" && h === 12) h = 0;
-
-        return h * 60 + m;
-      }
-
-      return null;
+    const dateObj = new Date(timeStr);
+    if (!isNaN(dateObj)) {
+      return dateObj.getHours() * 60 + dateObj.getMinutes();
     }
 
-    function formatTime(mins) {
-      let h = Math.floor(mins / 60);
-      let m = mins % 60;
-      let ampm = h >= 12 ? "PM" : "AM";
-      h = h % 12 || 12;
-      return `${h}:${String(m).padStart(2, "0")} ${ampm}`;
+    const match = timeStr.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+    if (match) {
+      let h = parseInt(match[1], 10);
+      let m = parseInt(match[2], 10);
+      let ampm = match[3].toUpperCase();
+
+      if (ampm === "PM" && h !== 12) h += 12;
+      if (ampm === "AM" && h === 12) h = 0;
+
+      return h * 60 + m;
     }
 
-    async function update() {
-      try {
-        const res = await fetch(SHEET_CSV_URL + "&t=" + Date.now());
-        const text = await res.text();
+    return null;
+  }
 
-        const rows = text.split("\n").slice(1);
+  function formatTime(mins) {
+    let h = Math.floor(mins / 60);
+    let m = mins % 60;
+    let ampm = h >= 12 ? "PM" : "AM";
+    h = h % 12 || 12;
+    return `${h}:${String(m).padStart(2, "0")} ${ampm}`;
+  }
 
-        const times = rows
-          .map(r => parseTimeToMinutes(r))
-          .filter(t => t !== null)
-          .sort((a, b) => a - b);
+  function setMinuteSize(value) {
+    const minutesEl = document.getElementById("minutes");
+    const text = String(value);
+    const digits = text.replace(/\D/g, "").length;
 
-        const now = new Date();
-        const current = now.getHours() * 60 + now.getMinutes();
+    minutesEl.classList.remove("digits-none", "digits-1", "digits-2", "digits-3");
 
-        let next = times.find(t => t >= current);
+    if (digits === 0) {
+      minutesEl.classList.add("digits-none");
+    } else if (digits === 1) {
+      minutesEl.classList.add("digits-1");
+    } else if (digits === 2) {
+      minutesEl.classList.add("digits-2");
+    } else {
+      minutesEl.classList.add("digits-3");
+    }
+  }
 
-        if (!next) {
-          document.getElementById("minutes").textContent = "--";
-          document.getElementById("nextTime").textContent = "No more departures today";
-          return;
-        }
+  function animateMinuteUpdate() {
+    const minutesEl = document.getElementById("minutes");
+    minutesEl.classList.remove("update-pop");
+    void minutesEl.offsetWidth;
+    minutesEl.classList.add("update-pop");
 
-        document.getElementById("minutes").textContent = next - current;
-        document.getElementById("nextTime").textContent =
-          "at: " + formatTime(next);
+    setTimeout(() => {
+      minutesEl.classList.remove("update-pop");
+    }, 350);
+  }
 
-      } catch {
-        document.getElementById("nextTime").textContent = "Schedule unavailable";
+  function showNoService(message) {
+    const minutesEl = document.getElementById("minutes");
+    const nextTimeEl = document.getElementById("nextTime");
+
+    minutesEl.textContent = "--";
+    setMinuteSize("--");
+    nextTimeEl.textContent = message;
+  }
+
+  async function update() {
+    try {
+      const separator = SHEET_CSV_URL.includes("?") ? "&" : "?";
+      const res = await fetch(SHEET_CSV_URL + separator + "t=" + Date.now());
+      const text = await res.text();
+
+      const rows = text.split("\n").slice(1);
+
+      const times = rows
+        .map(r => parseTimeToMinutes(r))
+        .filter(t => t !== null)
+        .sort((a, b) => a - b);
+
+      const now = new Date();
+      const current = now.getHours() * 60 + now.getMinutes();
+
+      const next = times.find(t => t >= current);
+
+      if (next === undefined) {
+        showNoService("No more departures today");
+        return;
       }
-    }
 
-    update();
-    setInterval(update, 60000);
-  </script>
+      const minutesAway = next - current;
+      const minutesEl = document.getElementById("minutes");
+      const nextTimeEl = document.getElementById("nextTime");
+
+      if (minutesEl.textContent !== String(minutesAway)) {
+        minutesEl.textContent = minutesAway;
+        setMinuteSize(minutesAway);
+        animateMinuteUpdate();
+      } else {
+        setMinuteSize(minutesAway);
+      }
+
+      nextTimeEl.textContent = "at: " + formatTime(next);
+
+    } catch (error) {
+      showNoService("Schedule unavailable");
+      console.error("Schedule update failed:", error);
+    }
+  }
+
+  update();
+  setInterval(update, 60000);
+</script>
 
 </body>
 </html>

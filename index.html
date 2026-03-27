@@ -18,13 +18,15 @@
 
 /* LEFT SIDE (TEXT) */
 .left {
-  width: 65%;
+  width: 70%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-evenly; /* 👈 spreads content top → bottom */
   align-items: center;
   text-align: center;
-  padding: 2vw;
+  padding: 3vw;
+  height: 100%;
+  gap: 2vh;
 }
 
 .left h1 {
@@ -33,28 +35,32 @@
   font-weight: 900;
 }
 
+.left h1 {
+  font-size: 6vw;
+  font-weight: 900;
+  margin: 0;
+}
+
 .left h2 {
-  font-size: 3.6vw;
-  margin: 0 0 2vw 0;
+  font-size: 3.2vw;
   font-weight: 800;
+  margin: 0;
   max-width: 90%;
 }
 
 .minutes {
-  font-size: 14vw;
+  font-size: 18vw;   /* 👈 BIG focal point */
   font-weight: 900;
-  margin: 1vw 0;
   line-height: 1;
 }
 
 .label {
-  font-size: 4.5vw;
+  font-size: 5vw;
   font-weight: 800;
 }
 
 .next-time {
-  font-size: 2.8vw;
-  margin-top: 1vw;
+  font-size: 4vw;
 }
 
     /* RIGHT SIDE (IMAGES) */

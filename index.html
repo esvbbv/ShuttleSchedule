@@ -168,6 +168,70 @@
 .bottom-block {
   text-align: center;
 }
+    @media (max-width: 768px) {
+  body {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+    overflow: auto;
+  }
+
+  .left {
+    width: 100%;
+    height: auto;
+    padding: 4vh 5vw;
+  }
+
+  .left h1 {
+    font-size: 12vw;
+  }
+
+  .left h2 {
+    font-size: 6vw;
+  }
+
+  .minutes.digits-none,
+  .minutes.digits-1,
+  .minutes.digits-2,
+  .minutes.digits-3 {
+    font-size: 22vw;
+  }
+
+  .label,
+  .next-time {
+    font-size: 6vw;
+  }
+
+  .right {
+    width: 100%;
+    height: auto;
+  }
+
+  .image-top {
+    height: auto;
+  }
+
+  .image-bottom {
+    height: auto;
+  }
+
+  .image-top img,
+  .image-bottom img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .logo {
+    position: static;
+    margin: 2vh auto;
+    text-align: center;
+  }
+
+  .logo img {
+    width: 35vw;
+  }
+}
   </style>
 </head>
 

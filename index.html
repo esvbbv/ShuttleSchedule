@@ -6,8 +6,13 @@
   <title>Airport Shuttle</title>
 
   <style>
-    body {
+    html, body {
       margin: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
       background: #16175d;
       color: #b7d63f;
       font-family: Arial, Helvetica, sans-serif;
@@ -16,250 +21,284 @@
       overflow: hidden;
     }
 
-/* LEFT SIDE (TEXT) */
-.left {
-  width: 70%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 2vh 3vw 4vh 3vw;
-  height: 100%;
-  box-sizing: border-box;
-}
+    /* LEFT SIDE */
+    .left {
+      width: 70%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2vh 3vw 4vh 3vw;
+      height: 100%;
+      box-sizing: border-box;
+    }
 
-.left h1 {
-  font-size: 6vw;
-  margin: 0 0 1vh 0;
-  font-weight: 900;
-  line-height: 1;
-}
+    .left h1 {
+      font-size: 6vw;
+      margin: 0 0 1vh 0;
+      font-weight: 900;
+      line-height: 1;
+    }
 
-.left h2 {
-  font-size: 3vw;
-  font-weight: 800;
-  max-width: 90%;
-  line-height: 1.1;
-}
+    .left h2 {
+      font-size: 3vw;
+      font-weight: 800;
+      max-width: 90%;
+      line-height: 1.1;
+    }
 
-.minutes {
-  font-weight: 900;
-  line-height: 1;
-  margin: 1vw 0;
-  transition: transform 0.35s ease, opacity 0.35s ease, font-size 0.35s ease;
-  animation: pulseMinutes 4s ease-in-out infinite;
-}
+    .minutes {
+      font-weight: 900;
+      line-height: 1;
+      margin: 1vw 0;
+      transition: transform 0.35s ease, opacity 0.35s ease, font-size 0.35s ease;
+      animation: pulseMinutes 4s ease-in-out infinite;
+    }
 
-.minutes.digits-none {
-  font-size: 8vw;
-}
+    .minutes.digits-none { font-size: 8vw; }
+    .minutes.digits-1 { font-size: 12vw; }
+    .minutes.digits-2 { font-size: 10vw; }
+    .minutes.digits-3 { font-size: 8vw; }
 
-.minutes.digits-1 {
-  font-size: 12vw;
-}
+    .minutes.update-pop {
+      animation: none;
+      transform: scale(1.08);
+    }
 
-.minutes.digits-2 {
-  font-size: 10vw;
-}
+    .label {
+      font-size: 3.5vw;
+      font-weight: 800;
+      line-height: 1;
+    }
 
-.minutes.digits-3 {
-  font-size: 8vw;
-}
+    .next-time {
+      font-size: 3.5vw;
+      font-weight: 800;
+      margin-top: 0;
+    }
 
-.minutes.update-pop {
-  transform: scale(1.08);
-}
-    
-.label {
-  font-size: 3.5vw;
-  font-weight: 800;
-  line-height: 1;
-}
+    @keyframes pulseMinutes {
+      0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      50% {
+        transform: scale(1.04);
+        opacity: 0.96;
+      }
+    }
 
-.next-time {
-  font-size: 3.5vw;
-  font-weight: 800;
-  margin-top: 0;
-}
+    /* RIGHT SIDE */
+    .right {
+      width: 35%;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      box-sizing: border-box;
+    }
 
-@keyframes pulseMinutes {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1.04);
-    opacity: 0.96;
-  }
-}
+    .image-top {
+      height: 80%;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+    }
 
-.minutes.update-pop {
-  animation: none;
-  transform: scale(1.08);
-}
+    .image-bottom {
+      height: 20%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-    /* RIGHT SIDE (IMAGES) */
-.right {
-  width: 35%;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  box-sizing: border-box;
-}
+    .image-top img,
+    .image-bottom img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      background: #16175d;
+    }
 
-.image-top {
-  height: 80%;
-  overflow: hidden;
-  display: flex;
-  align-items: top;
-  justify-content: center;
-}
+    /* LOGO */
+    .logo {
+      position: fixed;
+      left: 2vw;
+      bottom: 2vw;
+      z-index: 10;
+    }
 
-.image-bottom {
-  height: 20%;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.image-top img,
-.image-bottom img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  background: #16175d;
-}
-
-.image-bottom img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-  
-  /* LOGO */
-  .logo {
-    position: fixed;
-    left: 2vw; 
-    bottom: 2vw; 
-    z-index: 10; 
-  }
-  .logo img {
+    .logo img {
       width: 14vw;
       height: auto;
     }
-    /* LAYOUT BLOCKS (NEW) */
-.top-block {
-  text-align: center;
-  margin-bottom: 4vh;
-}
 
-.center-block {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 3vh;
-}
+    /* LAYOUT BLOCKS */
+    .top-block {
+      text-align: center;
+      margin-bottom: 4vh;
+    }
 
-.bottom-block {
-  text-align: center;
-}
+    .center-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 3vh;
+    }
+
+    .bottom-block {
+      text-align: center;
+    }
+
+    /* PORTRAIT READERBOARD SCREEN: 2160 x 3840 */
+    @media (orientation: portrait) and (min-width: 769px) {
+      body {
+        flex-direction: column;
+        width: 100vw;
+        height: 100vh;
+      }
+
+      .left {
+        width: 100%;
+        height: 55%;
+        padding: 4vh 5vw 2vh 5vw;
+      }
+
+      .right {
+        width: 100%;
+        height: 45%;
+        flex-direction: column;
+      }
+
+      .image-top {
+        height: 75%;
+      }
+
+      .image-bottom {
+        height: 25%;
+      }
+
+      .left h1 {
+        font-size: 9vw;
+      }
+
+      .left h2 {
+        font-size: 5vw;
+      }
+
+      .minutes.digits-none {
+        font-size: 12vw;
+      }
+
+      .minutes.digits-1 {
+        font-size: 20vw;
+      }
+
+      .minutes.digits-2 {
+        font-size: 17vw;
+      }
+
+      .minutes.digits-3 {
+        font-size: 13vw;
+      }
+
+      .label,
+      .next-time {
+        font-size: 5vw;
+      }
+
+      .logo img {
+        width: 22vw;
+      }
+    }
+
+    /* MOBILE VIEW */
     @media (max-width: 768px) {
-  body {
-    flex-direction: column;
-    height: auto;
-    min-height: 100vh;
-    overflow: auto;
-  }
+      body {
+        flex-direction: column;
+        height: auto;
+        min-height: 100vh;
+        overflow: auto;
+      }
 
-  .left {
-    width: 100%;
-    height: auto;
-    padding: 4vh 5vw;
-  }
+      .left {
+        width: 100%;
+        height: auto;
+        padding: 4vh 5vw;
+      }
 
-  .left h1 {
-    font-size: 12vw;
-  }
+      .left h1 {
+        font-size: 12vw;
+      }
 
-  .left h2 {
-    font-size: 6vw;
-  }
+      .left h2 {
+        font-size: 6vw;
+      }
 
-  .minutes.digits-none,
-  .minutes.digits-1,
-  .minutes.digits-2,
-  .minutes.digits-3 {
-    font-size: 22vw;
-  }
+      .minutes.digits-none,
+      .minutes.digits-1,
+      .minutes.digits-2,
+      .minutes.digits-3 {
+        font-size: 22vw;
+      }
 
-  .label,
-  .next-time {
-    font-size: 6vw;
-  }
+      .label,
+      .next-time {
+        font-size: 6vw;
+      }
 
-  .right {
-    width: 100%;
-    height: auto;
-  }
+      .right {
+        width: 100%;
+        height: auto;
+      }
 
-  .image-top {
-    height: auto;
-  }
+      .image-top,
+      .image-bottom {
+        height: auto;
+      }
 
-  .image-bottom {
-    height: auto;
-  }
+      .image-top img,
+      .image-bottom img {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+      }
 
-  .image-top img,
-  .image-bottom img {
-    width: 100%;
-    height: auto;
-    object-fit: contain;
-  }
+      .logo {
+        position: static;
+        margin: 2vh auto;
+        text-align: center;
+      }
 
-  .logo {
-    position: static;
-    margin: 2vh auto;
-    text-align: center;
-  }
-
-  .logo img {
-    width: 35vw;
-  }
-}
+      .logo img {
+        width: 35vw;
+      }
+    }
   </style>
 </head>
 
 <body>
 
-  <!-- LEFT SIDE -->
-<div class="left">
+  <div class="left">
+    <div class="top-block">
+      <h1>Airport Shuttle</h1>
+      <h2>Next departure from Lower Lobby drive in:</h2>
+    </div>
 
-  <!-- TOP -->
-  <div class="top-block">
-    <h1>Airport Shuttle</h1>
-    <h2>Next departure from Lower Lobby drive in:</h2>
+    <div class="center-block">
+      <div class="minutes" id="minutes">--</div>
+      <div class="label">minutes</div>
+    </div>
+
+    <div class="bottom-block">
+      <div class="next-time" id="nextTime">Loading schedule...</div>
+    </div>
   </div>
 
-  <!-- CENTER -->
-  <div class="center-block">
-    <div class="minutes" id="minutes">--</div>
-    <div class="label">minutes</div>
-  </div>
-
-  <!-- BOTTOM -->
-  <div class="bottom-block">
-    <div class="next-time" id="nextTime">Loading schedule...</div>
-  </div>
-
-</div>
-
-  <!-- RIGHT SIDE -->
   <div class="right">
     <div class="image-top">
       <img src="map.png" alt="Shuttle Route Map">
@@ -269,7 +308,6 @@
     </div>
   </div>
 
-  <!-- LOGO -->
   <div class="logo">
     <img src="doubletree-logo.png" alt="DoubleTree Logo">
   </div>
@@ -278,121 +316,121 @@
     const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSAHdpEZv0Hl9VNXoBJHsZDU7YlFWdqjfMk9OI6k4z1H0WCPmUkhsJIgheofIvB6HoPBGep1sl2VrCG/pub?gid=0&single=true&output=csv";
 
     function parseTimeToMinutes(timeStr) {
-    if (!timeStr) return null;
-    timeStr = String(timeStr).trim().replace(/^"|"$/g, "");
+      if (!timeStr) return null;
+      timeStr = String(timeStr).trim().replace(/^"|"$/g, "");
 
-    const dateObj = new Date(timeStr);
-    if (!isNaN(dateObj)) {
-      return dateObj.getHours() * 60 + dateObj.getMinutes();
-    }
-
-    const match = timeStr.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
-    if (match) {
-      let h = parseInt(match[1], 10);
-      let m = parseInt(match[2], 10);
-      let ampm = match[3].toUpperCase();
-
-      if (ampm === "PM" && h !== 12) h += 12;
-      if (ampm === "AM" && h === 12) h = 0;
-
-      return h * 60 + m;
-    }
-
-    return null;
-  }
-
-  function formatTime(mins) {
-    let h = Math.floor(mins / 60);
-    let m = mins % 60;
-    let ampm = h >= 12 ? "PM" : "AM";
-    h = h % 12 || 12;
-    return `${h}:${String(m).padStart(2, "0")} ${ampm}`;
-  }
-
-  function setMinuteSize(value) {
-    const minutesEl = document.getElementById("minutes");
-    const text = String(value);
-    const digits = text.replace(/\D/g, "").length;
-
-    minutesEl.classList.remove("digits-none", "digits-1", "digits-2", "digits-3");
-
-    if (digits === 0) {
-      minutesEl.classList.add("digits-none");
-    } else if (digits === 1) {
-      minutesEl.classList.add("digits-1");
-    } else if (digits === 2) {
-      minutesEl.classList.add("digits-2");
-    } else {
-      minutesEl.classList.add("digits-3");
-    }
-  }
-
-  function animateMinuteUpdate() {
-    const minutesEl = document.getElementById("minutes");
-    minutesEl.classList.remove("update-pop");
-    void minutesEl.offsetWidth;
-    minutesEl.classList.add("update-pop");
-
-    setTimeout(() => {
-      minutesEl.classList.remove("update-pop");
-    }, 350);
-  }
-
-  function showNoService(message) {
-    const minutesEl = document.getElementById("minutes");
-    const nextTimeEl = document.getElementById("nextTime");
-
-    minutesEl.textContent = "--";
-    setMinuteSize("--");
-    nextTimeEl.textContent = message;
-  }
-
-  async function update() {
-    try {
-      const separator = SHEET_CSV_URL.includes("?") ? "&" : "?";
-      const res = await fetch(SHEET_CSV_URL + separator + "t=" + Date.now());
-      const text = await res.text();
-
-      const rows = text.split("\n").slice(1);
-
-      const times = rows
-        .map(r => parseTimeToMinutes(r))
-        .filter(t => t !== null)
-        .sort((a, b) => a - b);
-
-      const now = new Date();
-      const current = now.getHours() * 60 + now.getMinutes();
-
-      const next = times.find(t => t >= current);
-
-      if (next === undefined) {
-        showNoService("No more departures today");
-        return;
+      const dateObj = new Date(timeStr);
+      if (!isNaN(dateObj)) {
+        return dateObj.getHours() * 60 + dateObj.getMinutes();
       }
 
-      const minutesAway = next - current;
+      const match = timeStr.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+      if (match) {
+        let h = parseInt(match[1], 10);
+        let m = parseInt(match[2], 10);
+        let ampm = match[3].toUpperCase();
+
+        if (ampm === "PM" && h !== 12) h += 12;
+        if (ampm === "AM" && h === 12) h = 0;
+
+        return h * 60 + m;
+      }
+
+      return null;
+    }
+
+    function formatTime(mins) {
+      let h = Math.floor(mins / 60);
+      let m = mins % 60;
+      let ampm = h >= 12 ? "PM" : "AM";
+      h = h % 12 || 12;
+      return `${h}:${String(m).padStart(2, "0")} ${ampm}`;
+    }
+
+    function setMinuteSize(value) {
+      const minutesEl = document.getElementById("minutes");
+      const text = String(value);
+      const digits = text.replace(/\D/g, "").length;
+
+      minutesEl.classList.remove("digits-none", "digits-1", "digits-2", "digits-3");
+
+      if (digits === 0) {
+        minutesEl.classList.add("digits-none");
+      } else if (digits === 1) {
+        minutesEl.classList.add("digits-1");
+      } else if (digits === 2) {
+        minutesEl.classList.add("digits-2");
+      } else {
+        minutesEl.classList.add("digits-3");
+      }
+    }
+
+    function animateMinuteUpdate() {
+      const minutesEl = document.getElementById("minutes");
+      minutesEl.classList.remove("update-pop");
+      void minutesEl.offsetWidth;
+      minutesEl.classList.add("update-pop");
+
+      setTimeout(() => {
+        minutesEl.classList.remove("update-pop");
+      }, 350);
+    }
+
+    function showNoService(message) {
       const minutesEl = document.getElementById("minutes");
       const nextTimeEl = document.getElementById("nextTime");
 
-      if (minutesEl.textContent !== String(minutesAway)) {
-        minutesEl.textContent = minutesAway;
-        setMinuteSize(minutesAway);
-        animateMinuteUpdate();
-      } else {
-        setMinuteSize(minutesAway);
-      }
-
-      nextTimeEl.textContent = "at: " + formatTime(next);
-
-    } catch (error) {
-      showNoService("Schedule unavailable");
-      console.error("Schedule update failed:", error);
+      minutesEl.textContent = "--";
+      setMinuteSize("--");
+      nextTimeEl.textContent = message;
     }
-  }
 
-  update();
-  setInterval(update, 60000);
-</script>
+    async function update() {
+      try {
+        const separator = SHEET_CSV_URL.includes("?") ? "&" : "?";
+        const res = await fetch(SHEET_CSV_URL + separator + "t=" + Date.now());
+        const text = await res.text();
+
+        const rows = text.split("\n").slice(1);
+
+        const times = rows
+          .map(r => parseTimeToMinutes(r))
+          .filter(t => t !== null)
+          .sort((a, b) => a - b);
+
+        const now = new Date();
+        const current = now.getHours() * 60 + now.getMinutes();
+
+        const next = times.find(t => t >= current);
+
+        if (next === undefined) {
+          showNoService("No more departures today");
+          return;
+        }
+
+        const minutesAway = next - current;
+        const minutesEl = document.getElementById("minutes");
+        const nextTimeEl = document.getElementById("nextTime");
+
+        if (minutesEl.textContent !== String(minutesAway)) {
+          minutesEl.textContent = minutesAway;
+          setMinuteSize(minutesAway);
+          animateMinuteUpdate();
+        } else {
+          setMinuteSize(minutesAway);
+        }
+
+        nextTimeEl.textContent = "at: " + formatTime(next);
+
+      } catch (error) {
+        showNoService("Schedule unavailable");
+        console.error("Schedule update failed:", error);
+      }
+    }
+
+    update();
+    setInterval(update, 60000);
+  </script>
 
 </body>
 </html>
